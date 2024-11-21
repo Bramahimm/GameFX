@@ -1,0 +1,3 @@
+Nama = Bram Ahimsa Lafayet
+NPM = 2317051042
+Kelas = C
