@@ -1,3 +1,7 @@
 Nama = Bram Ahimsa Lafayet
 NPM = 2317051042
 Kelas = C
+
+Nama = Muhammad Zidan Rosyid
+NPM : 2317051044
+Kelas : C
