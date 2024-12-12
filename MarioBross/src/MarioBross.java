@@ -12,11 +12,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.stage.FileChooser;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.io.File;
 
 abstract class Karakter {
     protected double x, y, width, height;
@@ -117,7 +115,7 @@ class Musuh extends Karakter {
     public Musuh(String imagePath, double x, double tinggi) {
         this.x = x;
         this.width = 90;
-        this.height = tinggi; // Tinggi musuh random
+        this.height = tinggi;
         this.y = 600 - 50 - height;
 
         try {
@@ -159,7 +157,7 @@ class Awan {
         try {
             Image img = new Image(imagePath);
             gambar = new ImageView(img);
-            gambar.setFitWidth(100); // Ukuran awan
+            gambar.setFitWidth(100);
             gambar.setFitHeight(60);
             gambar.setX(x);
             gambar.setY(y);
@@ -169,8 +167,8 @@ class Awan {
     }
 
     public void gerak() {
-        x -= kecepatan; // Awan bergerak ke kiri
-        if (x + gambar.getFitWidth() < 0) { // Jika keluar layar, reset posisi
+        x -= kecepatan;
+        if (x + gambar.getFitWidth() < 0) {
             x = 800;
         }
         gambar.setX(x);
@@ -194,7 +192,6 @@ public class MarioBross extends Application {
 
     @Override
     public void start(Stage stage) {
-        // Menampilkan Menu Start
         showMainMenu(stage);
     }
 
@@ -202,23 +199,20 @@ public class MarioBross extends Application {
         root = new Pane();
         Scene scene = new Scene(root, 800, 600);
 
-        // Background Menu Start
         ImageView backgroundMenu = new ImageView(new Image("file:start.png"));
         backgroundMenu.setFitWidth(800);
         backgroundMenu.setFitHeight(600);
         root.getChildren().add(backgroundMenu);
-    
-        // Tombol Mulai Permainan
+
         Button startButton = new Button("Play");
         startButton.setPrefWidth(150);
         startButton.setPrefHeight(50);
         startButton.setLayoutX(315);
         startButton.setLayoutY(245);
-        startButton.setStyle("-fx-font: 16px Arial; -fx-background-color: #55ff55; -fx-text-fill: white; -fx-background-radius: 20;");
+        startButton.setStyle("-fx-font: 16px Arial; -fx-background-color: #0000FF; -fx-text-fill: white; -fx-background-radius: 20;");
         startButton.setOnAction(e -> startGame(stage));
 
-        // Tombol Keluar
-        Button exitButton = new Button("Keluar");
+        Button exitButton = new Button("Exit");
         exitButton.setPrefWidth(150);
         exitButton.setPrefHeight(50);
         exitButton.setLayoutX(315);
@@ -226,7 +220,6 @@ public class MarioBross extends Application {
         exitButton.setStyle("-fx-font: 16px Arial; -fx-background-color: #ff5555; -fx-text-fill: white; -fx-background-radius: 20;");
         exitButton.setOnAction(e -> System.exit(0));
 
-        // Menambahkan tombol ke dalam menu
         root.getChildren().addAll(startButton, exitButton);
 
         stage.setTitle("Menu Utama");
@@ -238,41 +231,35 @@ public class MarioBross extends Application {
         root = new Pane();
         Scene scene = new Scene(root, 800, 600);
 
-        // Background permainan
         ImageView background = new ImageView(new Image("file:backgroundd.jpg"));
         background.setFitWidth(800);
         background.setFitHeight(600);
         root.getChildren().add(background);
 
-        // Tambahkan awan
-        for (int i = 0; i < 3; i++) { // Tambah beberapa awan
+        for (int i = 0; i < 3; i++) {
             double posisiX = 200 * i + random.nextInt(100);
             double posisiY = 50 + random.nextInt(100);
-            double kecepatan = 1 + random.nextDouble(); // Kecepatan acak
+            double kecepatan = 1 + random.nextDouble();
             Awan awan = new Awan("file:awan.png", posisiX, posisiY, kecepatan);
             awanList.add(awan);
             root.getChildren().add(awan.getGambar());
         }
 
-        // Tanah
         ImageView tanah = new ImageView(new Image("file:blok.jpg"));
         tanah.setFitWidth(800);
         tanah.setFitHeight(65);
         tanah.setY(549);
         root.getChildren().add(tanah);
 
-        // Pemain
         pemain = new Pemain("file:mario.png", 50, 500);
         root.getChildren().add(pemain.getGambar());
 
-        // Teks skor dan nyawa
         teksSkor = new Text(10, 20, "Skor: " + skor);
         teksSkor.setFill(Color.WHITE);
         teksNyawa = new Text(10, 40, "Nyawa: " + nyawa);
         teksNyawa.setFill(Color.WHITE);
         root.getChildren().addAll(teksSkor, teksNyawa);
 
-        // Input kontrol pemain
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.D) pemain.setKecepatanX(5);
             if (e.getCode() == KeyCode.A) pemain.setKecepatanX(-5);
@@ -283,13 +270,11 @@ public class MarioBross extends Application {
             if (e.getCode() == KeyCode.D || e.getCode() == KeyCode.A) pemain.setKecepatanX(0);
         });
 
-        // Game loop
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 pemain.gerak();
 
-                // Gerakkan awan
                 for (Awan awan : awanList) {
                     awan.gerak();
                 }
@@ -310,7 +295,6 @@ public class MarioBross extends Application {
         };
         gameLoop.start();
 
-        // Delay musuh
         delayKemunculanMusuh();
 
         stage.setTitle("Mario Game");
@@ -318,11 +302,11 @@ public class MarioBross extends Application {
         stage.show();
     }
 
-    private Timeline musuhTimeline; // Timeline untuk kemunculan musuh
+    private Timeline musuhTimeline;
 
     private void delayKemunculanMusuh() {
         musuhTimeline = new Timeline(new KeyFrame(Duration.seconds(2), e -> {
-            double tinggiRandom = 50 + random.nextInt(220); // Tinggi antara 50-200
+            double tinggiRandom = 50 + random.nextInt(220);
             Musuh musuhBaru = new Musuh("file:pipa.png", 800, tinggiRandom);
             rintangan.add(musuhBaru);
             root.getChildren().add(musuhBaru.getGambar());
@@ -332,27 +316,22 @@ public class MarioBross extends Application {
     }
 
     private void gameOver(Pane root, Stage stage) {
-        // Hentikan semua animasi
-        gameLoop.stop(); // Hentikan AnimationTimer
-        if (musuhTimeline != null) musuhTimeline.stop(); // Hentikan Timeline jika berjalan
+        gameLoop.stop();
+        if (musuhTimeline != null) musuhTimeline.stop();
 
-        // Bersihkan semua elemen di Pane
         root.getChildren().clear();
 
-        // Tambahkan gambar Game Over
         ImageView gameOverImage = new ImageView(new Image("file:gameover.jpg"));
-        gameOverImage.setFitWidth(800); // Sesuaikan ukuran gambar
+        gameOverImage.setFitWidth(800);
         gameOverImage.setFitHeight(600);
         root.getChildren().add(gameOverImage);
 
-        // Tambahkan teks skor akhir
         Text skorAkhirText = new Text("Skor Akhir: " + skor);
         skorAkhirText.setStyle("-fx-font: 24px Arial; -fx-fill: white;");
         skorAkhirText.setX(300);
         skorAkhirText.setY(250);
         root.getChildren().add(skorAkhirText);
 
-        // Tambahkan tombol Restart
         Button restartButton = new Button("Restart");
         restartButton.setPrefWidth(100);
         restartButton.setPrefHeight(40);
@@ -361,18 +340,13 @@ public class MarioBross extends Application {
         restartButton.setStyle("-fx-font: 16px Arial; -fx-background-color: #ff5555; -fx-text-fill: white;");
 
         restartButton.setOnAction(e -> {
-         // Reset data permainan
-        skor = 0;
-        nyawa = 3;
-        rintangan.clear();
-        awanList.clear();  // Bersihkan daftar awan jika ada
+            skor = 0;
+            nyawa = 3;
+            rintangan.clear();
+            awanList.clear();
+            startGame(stage);
+        });
 
-        // Mulai ulang permainan (memulai game langsung)
-        startGame(stage); // Langsung memulai game
-    });
-
-
-        // Tambahkan tombol Exit
         Button exitButton = new Button("Exit");
         exitButton.setPrefWidth(100);
         exitButton.setPrefHeight(40);
