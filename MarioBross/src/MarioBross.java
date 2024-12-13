@@ -147,6 +147,40 @@ class Musuh extends Karakter {
     }
 }
 
+class Block{
+    private ImageView gambar;
+    private double y, kecepatan, x;
+    public Block(String imagePath, double x, double y, double kecepatan) {
+        this.y = y;
+        this.kecepatan = kecepatan;
+        this.x = x;
+
+        try {
+            Image img = new Image(imagePath);
+            gambar = new ImageView(img);
+            gambar.setFitWidth(800); 
+            gambar.setFitHeight(65);          
+            gambar.setY(y);
+        } catch (Exception e) {
+            System.out.println("Gagal memuat gambar blok");
+        }
+    }
+    
+    
+    public void gerak() {
+        x -= kecepatan;
+
+        if (x + gambar.getFitWidth() < 0) { 
+            x = 800; 
+        }
+
+        gambar.setX(x);
+    }
+
+    public ImageView getGambar() { return gambar; }
+}
+
+
 class Awan {
     private ImageView gambar;
     private double x, y, kecepatan;
@@ -190,6 +224,7 @@ public class MarioBross extends Application {
     private Pane root;
     private Random random = new Random();
     private AnimationTimer gameLoop;
+    private List<Block> blockList = new ArrayList<>();
 
     @Override
     public void start(Stage stage) {
@@ -232,11 +267,20 @@ public class MarioBross extends Application {
         root = new Pane();
         Scene scene = new Scene(root, 800, 600);
 
+        //backgroundnya
         ImageView background = new ImageView(new Image("file:backgroundd.jpg"));
         background.setFitWidth(800);
         background.setFitHeight(600);
         root.getChildren().add(background);
 
+        //bloknya
+        for (int i = 0; i < 11; i++) { // Membuat 10 blok
+            Block block = new Block("file:blok.jpg", i * 80, 549, 2); // Atur posisi setiap blok
+            blockList.add(block);
+            root.getChildren().add(block.getGambar());
+        }
+
+        //awannya
         for (int i = 0; i < 3; i++) {
             double posisiX = 200 * i + random.nextInt(100);
             double posisiY = 50 + random.nextInt(100);
@@ -246,11 +290,11 @@ public class MarioBross extends Application {
             root.getChildren().add(awan.getGambar());
         }
 
-        ImageView tanah = new ImageView(new Image("file:blok.jpg"));
-        tanah.setFitWidth(800);
-        tanah.setFitHeight(65);
-        tanah.setY(549);
-        root.getChildren().add(tanah);
+        // ImageView tanah = new ImageView(new Image("file:blok.jpg"));
+        // tanah.setFitWidth(800);
+        // tanah.setFitHeight(65);
+        // tanah.setY(549);
+        // root.getChildren().add(tanah);
 
         pemain = new Pemain("file:mario.png", 50, 500);
         root.getChildren().add(pemain.getGambar());
