@@ -267,20 +267,17 @@ public class MarioBross extends Application {
         root = new Pane();
         Scene scene = new Scene(root, 800, 600);
 
-        //backgroundnya
         ImageView background = new ImageView(new Image("file:backgroundd.jpg"));
         background.setFitWidth(800);
         background.setFitHeight(600);
         root.getChildren().add(background);
 
-        //bloknya
         for (int i = 0; i < 11; i++) { // Membuat 10 blok
             Block block = new Block("file:blok.jpg", i * 80, 549, 2); // Atur posisi setiap blok
             blockList.add(block);
             root.getChildren().add(block.getGambar());
         }
 
-        //awannya
         for (int i = 0; i < 3; i++) {
             double posisiX = 200 * i + random.nextInt(100);
             double posisiY = 50 + random.nextInt(100);
