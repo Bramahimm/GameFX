@@ -290,12 +290,6 @@ public class MarioBross extends Application {
             root.getChildren().add(awan.getGambar());
         }
 
-        // ImageView tanah = new ImageView(new Image("file:blok.jpg"));
-        // tanah.setFitWidth(800);
-        // tanah.setFitHeight(65);
-        // tanah.setY(549);
-        // root.getChildren().add(tanah);
-
         pemain = new Pemain("file:mario.png", 50, 500);
         root.getChildren().add(pemain.getGambar());
 
