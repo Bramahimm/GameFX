@@ -256,8 +256,11 @@ public class MarioBross extends Application {
 
         teksSkor = new Text(10, 20, "Skor: " + skor);
         teksSkor.setFill(Color.WHITE);
+        teksSkor.setFont(Font.font("Itim", 30));
+        
         teksNyawa = new Text(10, 40, "Nyawa: " + nyawa);
         teksNyawa.setFill(Color.WHITE);
+        teksNyawa.setFont(Font.font("Itim", 30));
         root.getChildren().addAll(teksSkor, teksNyawa);
 
         scene.setOnKeyPressed(e -> {
