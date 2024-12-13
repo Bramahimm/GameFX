@@ -326,6 +326,9 @@ public class MarioBross extends Application {
                 for (Awan awan : awanList) {
                     awan.gerak();
                 }
+                for (Block block : blockList) {
+                    block.gerak();
+                }
 
                 for (Musuh pipa : rintangan) {
                     pipa.gerak();
